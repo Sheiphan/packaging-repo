@@ -1,0 +1,1 @@
+CONSTANT = "Hi THERE editable"
