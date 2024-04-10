@@ -1,6 +1,6 @@
 PACKAGE_DIR=./
 
-install: 
+install:
 	echo "Running"
 
 build:

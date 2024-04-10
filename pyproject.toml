@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"   # this line takes care of the setup.py
 mypkg = ["*.json"]
 
 [project]
-name = "packaging_demo_sheiphan"
+name = "packaging_demo"
 authors = [
     {name = "Sheiphan Joseph", email = "sheiphanshaijan@gmail.com"},
 ]
@@ -28,9 +28,11 @@ dependencies = [
 version = "0.0.0"
 
 [project.optional-dependencies]
-dev = ["ruff", "mypy", "black"]
+test = ["pytest", "pytest-cov"]
 colors = ["rich"]
-all = ["packaging-demo[dev,colors]"]
+release = ["build","twine"]
+static-code-qa = ["pre-commit"]
+dev = ["packaging-demo[test,release,static-code-qa]"]
 
 [tool.black]
 line-length=119
