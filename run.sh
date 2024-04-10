@@ -4,6 +4,12 @@ set -ex
 
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+function load_dotenv {
+    while read -r line; do
+        export "$line"
+    done < <(grep -v '^#' "$THIS_DIR/.env" | grep -v '^$')
+}
+
 function install {
     python -m pip install --upgrade pip
     python -m pip install --editable "$THIS_DIR/[dev]"
@@ -18,7 +24,30 @@ function build {
 }
 
 function publish:test {
-    twine upload --repository testpypi dist/*
+    load_dotenv
+    twine upload dist/* \
+    --repository testpypi \
+    --username=__token__ \
+    --password="$TEST_PYPI_TOKEN"
+}
+
+function clean {
+    rm -rf dist build
+    find . \
+        -type d \
+        \( \
+            -name "*cache*" \
+            -o -name "*.dist-info" \
+            -o -name "*.egg-info" \
+        \) \
+        -not -path "./venv/*" \
+        -exec rm -r {} +
+}
+
+function release:test {
+    clean
+    build
+    publish:test
 }
 
 function start {
