@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"   # this line takes care of the setup.py
 mypkg = ["*.json"]
 
 [project]
-name = "packaging_demo"
+name = "packaging_demo_sheiphan"
 authors = [
     {name = "Sheiphan Joseph", email = "sheiphanshaijan@gmail.com"},
 ]
