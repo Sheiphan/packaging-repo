@@ -23,14 +23,6 @@ function build {
     python -m build --sdist --wheel "$THIS_DIR"
 }
 
-function publish:test {
-    load_dotenv
-    twine upload dist/* \
-    --repository testpypi \
-    --username=__token__ \
-    --password="$TEST_PYPI_TOKEN"
-}
-
 function clean {
     rm -rf dist build
     find . \
@@ -44,11 +36,35 @@ function clean {
         -exec rm -r {} +
 }
 
+
+function publish:test {
+    load_dotenv
+    twine upload dist/* \
+    --repository testpypi \
+    --username=__token__ \
+    --password="$TEST_PYPI_TOKEN"
+}
+
+function publish:prod {
+    load_dotenv
+    twine upload dist/* \
+    --repository pypi \
+    --username=__token__ \
+    --password="$PROD_PYPI_TOKEN"
+}
+
+
 function release:test {
     clean
     build
     publish:test
 }
+
+function release:prod {
+    release:test
+    publish:prod
+}
+
 
 function start {
     echo "start task not implemented"
